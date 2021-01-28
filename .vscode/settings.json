@@ -1,0 +1,33 @@
+{
+  "git.ignoreLimitWarning": true,
+  "git.decorations.enabled": false,
+
+  "problems.decorations.enabled": false,
+
+  "files.autoSave": "afterDelay",
+
+  "vsicons.presets.angular": true,
+
+  "files.exclude": {
+      "**/.git": true,
+      "**/.svn": true,
+      "**/.hg": true,
+      "**/.DS_Store": true,
+      "**/.gitignore": true,
+      "npm-debug.log": true
+  },
+
+  "editor.fontFamily": "Roboto Mono",
+  "editor.fontSize": 16,
+  "editor.quickSuggestions": true,
+  "editor.parameterHints.enabled": false,
+  "editor.wordBasedSuggestions": false,
+  "editor.selectionHighlight": false,
+  "editor.suggestOnTriggerCharacters": true,
+
+  "window.zoomLevel": 1,
+  
+  "terminal.integrated.fontSize": 16,
+
+  "editor.cursorBlinking": "solid"  
+}
