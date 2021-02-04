@@ -13,7 +13,6 @@ import { EditReaderComponent } from './edit-reader/edit-reader.component';
 import { LoggerService } from './core/logger.service';
 import { DataService } from './core/data.service';
 import { PlainLoggerService } from './core/plain-logger.service';
-import { dataServiceFactory } from './core/data.service.factory';
 
 @NgModule({
   declarations: [
