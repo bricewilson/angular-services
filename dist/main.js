@@ -1,5 +1,21 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([["main"],{
 
+/***/ "+5Uy":
+/*!********************************************!*\
+  !*** ./src/app/models/bookTrackerError.ts ***!
+  \********************************************/
+/*! exports provided: BookTrackerError */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BookTrackerError", function() { return BookTrackerError; });
+class BookTrackerError {
+}
+
+
+/***/ }),
+
 /***/ 0:
 /*!***************************!*\
   !*** multi ./src/main.ts ***!
@@ -256,35 +272,65 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DataService", function() { return DataService; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "mrSG");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "fXoL");
-/* harmony import */ var app_data__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! app/data */ "AVqD");
-/* harmony import */ var _logger_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./logger.service */ "fSl4");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "qCKp");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/operators */ "kU1M");
+/* harmony import */ var app_data__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! app/data */ "AVqD");
+/* harmony import */ var _logger_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./logger.service */ "fSl4");
+/* harmony import */ var app_models_bookTrackerError__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! app/models/bookTrackerError */ "+5Uy");
+
+
+
+
 
 
 
 
 let DataService = class DataService {
-    constructor(loggerService) {
+    constructor(loggerService, http) {
         this.loggerService = loggerService;
-        this.mostPopularBook = app_data__WEBPACK_IMPORTED_MODULE_2__["allBooks"][0];
+        this.http = http;
+        this.mostPopularBook = app_data__WEBPACK_IMPORTED_MODULE_5__["allBooks"][0];
+    }
+    getAuthorRecommendation(readerID) {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                if (readerID > 0) {
+                    resolve('Dr. Seuss');
+                }
+                else {
+                    reject('Invalid reader ID');
+                }
+            }, 2000);
+        });
     }
     setMostPopularBook(popularBook) {
         this.mostPopularBook = popularBook;
     }
     getAllReaders() {
-        return app_data__WEBPACK_IMPORTED_MODULE_2__["allReaders"];
+        return this.http.get('/api/readers')
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["catchError"])(this.handleError));
+    }
+    handleError(error) {
+        let dataError = new app_models_bookTrackerError__WEBPACK_IMPORTED_MODULE_7__["BookTrackerError"]();
+        dataError.errorNumber = 100;
+        dataError.message = error.statusText;
+        dataError.friendlyMessage = 'An error occurred retrieving data.';
+        return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["throwError"])(dataError);
     }
     getReaderById(id) {
-        return app_data__WEBPACK_IMPORTED_MODULE_2__["allReaders"].find(reader => reader.readerID === id);
+        return app_data__WEBPACK_IMPORTED_MODULE_5__["allReaders"].find(reader => reader.readerID === id);
     }
     getAllBooks() {
-        return app_data__WEBPACK_IMPORTED_MODULE_2__["allBooks"];
+        return app_data__WEBPACK_IMPORTED_MODULE_5__["allBooks"];
     }
     getBookById(id) {
-        return app_data__WEBPACK_IMPORTED_MODULE_2__["allBooks"].find(book => book.bookID === id);
+        return app_data__WEBPACK_IMPORTED_MODULE_5__["allBooks"].find(book => book.bookID === id);
     }
 };
 DataService.ctorParameters = () => [
-    { type: _logger_service__WEBPACK_IMPORTED_MODULE_3__["LoggerService"] }
+    { type: _logger_service__WEBPACK_IMPORTED_MODULE_6__["LoggerService"] },
+    { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"] }
 ];
 DataService = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])()
@@ -322,8 +368,18 @@ let DashboardComponent = class DashboardComponent {
     }
     ngOnInit() {
         this.allBooks = this.dataService.getAllBooks();
-        this.allReaders = this.dataService.getAllReaders();
+        this.dataService.getAllReaders()
+            .subscribe((data) => this.allReaders = data, (err) => this.loggerService.log(err.friendlyMessage), () => this.loggerService.log('All done getting readers!'));
         this.mostPopularBook = this.dataService.mostPopularBook;
+        this.getAuthorRecommendationAsync(1)
+            .catch(err => this.loggerService.error(err));
+        this.loggerService.log('Done with dashboard initialization.');
+    }
+    getAuthorRecommendationAsync(readerID) {
+        return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
+            let author = yield this.dataService.getAuthorRecommendation(readerID);
+            this.loggerService.log(author);
+        });
     }
     deleteBook(bookID) {
         console.warn(`Delete book not yet implemented (bookID: ${bookID}).`);
@@ -447,15 +503,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/platform-browser */ "jhN1");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "fXoL");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/forms */ "3Pt+");
-/* harmony import */ var _add_book_add_book_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./add-book/add-book.component */ "6hI5");
-/* harmony import */ var _add_reader_add_reader_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./add-reader/add-reader.component */ "W+pk");
-/* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./app.component */ "Sy1n");
-/* harmony import */ var _app_routing_module__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./app-routing.module */ "vY5A");
-/* harmony import */ var _dashboard_dashboard_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./dashboard/dashboard.component */ "QX6l");
-/* harmony import */ var _edit_book_edit_book_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./edit-book/edit-book.component */ "C9lS");
-/* harmony import */ var _edit_reader_edit_reader_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./edit-reader/edit-reader.component */ "dkrA");
-/* harmony import */ var _core_logger_service__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./core/logger.service */ "fSl4");
-/* harmony import */ var _core_data_service__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./core/data.service */ "QVKM");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
+/* harmony import */ var _add_book_add_book_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./add-book/add-book.component */ "6hI5");
+/* harmony import */ var _add_reader_add_reader_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./add-reader/add-reader.component */ "W+pk");
+/* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./app.component */ "Sy1n");
+/* harmony import */ var _app_routing_module__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./app-routing.module */ "vY5A");
+/* harmony import */ var _dashboard_dashboard_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./dashboard/dashboard.component */ "QX6l");
+/* harmony import */ var _edit_book_edit_book_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./edit-book/edit-book.component */ "C9lS");
+/* harmony import */ var _edit_reader_edit_reader_component__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./edit-reader/edit-reader.component */ "dkrA");
+/* harmony import */ var _core_logger_service__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./core/logger.service */ "fSl4");
+/* harmony import */ var _core_data_service__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./core/data.service */ "QVKM");
+
 
 
 
@@ -474,17 +532,18 @@ let AppModule = class AppModule {
 AppModule = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["NgModule"])({
         declarations: [
-            _app_component__WEBPACK_IMPORTED_MODULE_6__["AppComponent"],
-            _dashboard_dashboard_component__WEBPACK_IMPORTED_MODULE_8__["DashboardComponent"],
-            _add_book_add_book_component__WEBPACK_IMPORTED_MODULE_4__["AddBookComponent"],
-            _edit_reader_edit_reader_component__WEBPACK_IMPORTED_MODULE_10__["EditReaderComponent"],
-            _edit_book_edit_book_component__WEBPACK_IMPORTED_MODULE_9__["EditBookComponent"],
-            _add_reader_add_reader_component__WEBPACK_IMPORTED_MODULE_5__["AddReaderComponent"]
+            _app_component__WEBPACK_IMPORTED_MODULE_7__["AppComponent"],
+            _dashboard_dashboard_component__WEBPACK_IMPORTED_MODULE_9__["DashboardComponent"],
+            _add_book_add_book_component__WEBPACK_IMPORTED_MODULE_5__["AddBookComponent"],
+            _edit_reader_edit_reader_component__WEBPACK_IMPORTED_MODULE_11__["EditReaderComponent"],
+            _edit_book_edit_book_component__WEBPACK_IMPORTED_MODULE_10__["EditBookComponent"],
+            _add_reader_add_reader_component__WEBPACK_IMPORTED_MODULE_6__["AddReaderComponent"]
         ],
         imports: [
             _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"],
-            _app_routing_module__WEBPACK_IMPORTED_MODULE_7__["AppRoutingModule"],
-            _angular_forms__WEBPACK_IMPORTED_MODULE_3__["FormsModule"]
+            _app_routing_module__WEBPACK_IMPORTED_MODULE_8__["AppRoutingModule"],
+            _angular_forms__WEBPACK_IMPORTED_MODULE_3__["FormsModule"],
+            _angular_common_http__WEBPACK_IMPORTED_MODULE_4__["HttpClientModule"]
         ],
         providers: [
             // PlainLoggerService,
@@ -494,10 +553,10 @@ AppModule = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
             //   error: (message: string) => console.log(`PROBLEM: ${message}`)
             // }},
             // { provide: DataService, useFactory: dataServiceFactory, deps: [LoggerService] }
-            _core_logger_service__WEBPACK_IMPORTED_MODULE_11__["LoggerService"],
-            _core_data_service__WEBPACK_IMPORTED_MODULE_12__["DataService"]
+            _core_logger_service__WEBPACK_IMPORTED_MODULE_12__["LoggerService"],
+            _core_data_service__WEBPACK_IMPORTED_MODULE_13__["DataService"]
         ],
-        bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_6__["AppComponent"]]
+        bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_7__["AppComponent"]]
     })
 ], AppModule);
 
