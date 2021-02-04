@@ -181,6 +181,43 @@ EditBookComponent = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
 
 /***/ }),
 
+/***/ "EX//":
+/*!***************************************!*\
+  !*** ./src/app/core/badge.service.ts ***!
+  \***************************************/
+/*! exports provided: BadgeService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BadgeService", function() { return BadgeService; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "mrSG");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "fXoL");
+
+
+let BadgeService = class BadgeService {
+    constructor() { }
+    getReaderBadge(minutesRead) {
+        if (minutesRead > 5000) {
+            return 'Book Worm';
+        }
+        else if (minutesRead > 2500) {
+            return 'Page Turner';
+        }
+        else {
+            return 'Getting Started';
+        }
+    }
+};
+BadgeService.ctorParameters = () => [];
+BadgeService = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])()
+], BadgeService);
+
+
+
+/***/ }),
+
 /***/ "H/d9":
 /*!******************************************************************************************!*\
   !*** ./node_modules/raw-loader/dist/cjs.js!./src/app/dashboard/dashboard.component.html ***!
@@ -250,9 +287,7 @@ DataService.ctorParameters = () => [
     { type: _logger_service__WEBPACK_IMPORTED_MODULE_3__["LoggerService"] }
 ];
 DataService = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
-    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
-        providedIn: 'root'
-    })
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])()
 ], DataService);
 
 
@@ -283,6 +318,7 @@ let DashboardComponent = class DashboardComponent {
     constructor(loggerService, dataService) {
         this.loggerService = loggerService;
         this.dataService = dataService;
+        this.loggerService.log('Creating the dashboard!');
     }
     ngOnInit() {
         this.allBooks = this.dataService.getAllBooks();
@@ -418,6 +454,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _dashboard_dashboard_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./dashboard/dashboard.component */ "QX6l");
 /* harmony import */ var _edit_book_edit_book_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./edit-book/edit-book.component */ "C9lS");
 /* harmony import */ var _edit_reader_edit_reader_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./edit-reader/edit-reader.component */ "dkrA");
+/* harmony import */ var _core_logger_service__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./core/logger.service */ "fSl4");
+/* harmony import */ var _core_data_service__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./core/data.service */ "QVKM");
+
+
 
 
 
@@ -446,7 +486,17 @@ AppModule = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
             _app_routing_module__WEBPACK_IMPORTED_MODULE_7__["AppRoutingModule"],
             _angular_forms__WEBPACK_IMPORTED_MODULE_3__["FormsModule"]
         ],
-        providers: [],
+        providers: [
+            // PlainLoggerService,
+            // { provide: LoggerService, useExisting: PlainLoggerService },
+            // { provide: LoggerService, useValue: {
+            //   log: (message: string) => console.log(`MESSAGE: ${message}`),
+            //   error: (message: string) => console.log(`PROBLEM: ${message}`)
+            // }},
+            // { provide: DataService, useFactory: dataServiceFactory, deps: [LoggerService] }
+            _core_logger_service__WEBPACK_IMPORTED_MODULE_11__["LoggerService"],
+            _core_data_service__WEBPACK_IMPORTED_MODULE_12__["DataService"]
+        ],
         bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_6__["AppComponent"]]
     })
 ], AppModule);
@@ -464,7 +514,7 @@ AppModule = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<div class=\"col-lg-5\">\r\n  <div class=\"well bs-component\">\r\n    <form class=\"form-horizontal\">\r\n      <fieldset>\r\n        <legend>Edit Reader</legend>\r\n        <div class=\"form-group\">\r\n          <label for=\"inputGoal\" class=\"col-lg-3 control-label\">Name</label>\r\n          <div class=\"col-lg-8\">\r\n            <input type=\"text\" class=\"form-control\" id=\"inputGoal\" placeholder=\"Name\" [(ngModel)]=\"selectedReader.name\" name=\"name\">\r\n          </div>\r\n        </div>\r\n        <div class=\"form-group\">\r\n          <label for=\"inputGoal\" class=\"col-lg-3 control-label\">Weekly Goal</label>\r\n          <div class=\"col-lg-8\">\r\n            <input type=\"text\" class=\"form-control\" id=\"inputGoal\" placeholder=\"Weekly Goal\" [(ngModel)]=\"selectedReader.weeklyReadingGoal\" name=\"weeklyReaddingGoal\">\r\n          </div>\r\n        </div>\r\n        <div class=\"form-group\">\r\n          <label for=\"inputTotal\" class=\"col-lg-3 control-label\">Total Read</label>\r\n          <div class=\"col-lg-8\">\r\n            <input type=\"text\" class=\"form-control\" id=\"inputTotal\" placeholder=\"Total Minutes Read\" [(ngModel)]=\"selectedReader.totalMinutesRead\" name=\"totalMinutesRead\">\r\n          </div>\r\n        </div>\r\n        <div class=\"form-group\">\r\n          <div class=\"col-lg-10 col-lg-offset-3\">\r\n            <button type=\"button\" class=\"btn btn-primary\" (click)=\"saveChanges()\">Save</button>\r\n          </div>\r\n        </div>\r\n      </fieldset>\r\n    </form>\r\n  </div>\r\n</div>");
+/* harmony default export */ __webpack_exports__["default"] = ("<div class=\"col-lg-5\">\r\n  <div class=\"well bs-component\">\r\n    <form class=\"form-horizontal\">\r\n      <fieldset>\r\n        <legend>Edit Reader</legend>\r\n        <div class=\"form-group\">\r\n          <label for=\"inputGoal\" class=\"col-lg-3 control-label\">Name</label>\r\n          <div class=\"col-lg-8\">\r\n            <input type=\"text\" class=\"form-control\" id=\"inputGoal\" placeholder=\"Name\" [(ngModel)]=\"selectedReader.name\" name=\"name\">\r\n          </div>\r\n        </div>\r\n        <div class=\"form-group\">\r\n          <label for=\"inputGoal\" class=\"col-lg-3 control-label\">Weekly Goal</label>\r\n          <div class=\"col-lg-8\">\r\n            <input type=\"text\" class=\"form-control\" id=\"inputGoal\" placeholder=\"Weekly Goal\" [(ngModel)]=\"selectedReader.weeklyReadingGoal\" name=\"weeklyReaddingGoal\">\r\n          </div>\r\n        </div>\r\n        <div class=\"form-group\">\r\n          <label for=\"inputTotal\" class=\"col-lg-3 control-label\">Total Read</label>\r\n          <div class=\"col-lg-8\">\r\n            <input type=\"text\" class=\"form-control\" id=\"inputTotal\" placeholder=\"Total Minutes Read\" [(ngModel)]=\"selectedReader.totalMinutesRead\" name=\"totalMinutesRead\">\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label class=\"col-lg-3 control-label\">Current Badge</label>\r\n          <div class=\"col-lg-8\">\r\n            {{ currentBadge }}\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <div class=\"col-lg-10 col-lg-offset-3\">\r\n            <button type=\"button\" class=\"btn btn-primary\" (click)=\"saveChanges()\">Save</button>\r\n          </div>\r\n        </div>\r\n      </fieldset>\r\n    </form>\r\n  </div>\r\n</div>");
 
 /***/ }),
 
@@ -495,20 +545,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _raw_loader_edit_reader_component_html__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! raw-loader!./edit-reader.component.html */ "Zpjs");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "fXoL");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "tyNb");
-/* harmony import */ var app_core_data_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! app/core/data.service */ "QVKM");
+/* harmony import */ var app_core_badge_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! app/core/badge.service */ "EX//");
+/* harmony import */ var app_core_data_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! app/core/data.service */ "QVKM");
+
 
 
 
 
 
 let EditReaderComponent = class EditReaderComponent {
-    constructor(route, dataService) {
+    constructor(route, dataService, badgeService) {
         this.route = route;
         this.dataService = dataService;
+        this.badgeService = badgeService;
     }
     ngOnInit() {
         let readerID = parseInt(this.route.snapshot.params['id']);
         this.selectedReader = this.dataService.getReaderById(readerID);
+        this.currentBadge = this.badgeService.getReaderBadge(this.selectedReader.totalMinutesRead);
     }
     saveChanges() {
         console.warn('Save reader not yet implemented.');
@@ -516,12 +570,14 @@ let EditReaderComponent = class EditReaderComponent {
 };
 EditReaderComponent.ctorParameters = () => [
     { type: _angular_router__WEBPACK_IMPORTED_MODULE_3__["ActivatedRoute"] },
-    { type: app_core_data_service__WEBPACK_IMPORTED_MODULE_4__["DataService"] }
+    { type: app_core_data_service__WEBPACK_IMPORTED_MODULE_5__["DataService"] },
+    { type: app_core_badge_service__WEBPACK_IMPORTED_MODULE_4__["BadgeService"] }
 ];
 EditReaderComponent = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Component"])({
         selector: 'app-edit-reader',
-        template: _raw_loader_edit_reader_component_html__WEBPACK_IMPORTED_MODULE_1__["default"]
+        template: _raw_loader_edit_reader_component_html__WEBPACK_IMPORTED_MODULE_1__["default"],
+        providers: [app_core_badge_service__WEBPACK_IMPORTED_MODULE_4__["BadgeService"]]
     })
 ], EditReaderComponent);
 
@@ -553,9 +609,7 @@ let LoggerService = class LoggerService {
     }
 };
 LoggerService = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"])([
-    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
-        providedIn: 'root'
-    })
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])()
 ], LoggerService);
 
 
